@@ -23,7 +23,7 @@ export const Logo = (props: Props) => {
       fetchPriority={priority}
       decoding="async"
       className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/jamesmaccoy/stays/refs/heads/main/src/components/Logo/simplePlekbold.svg"
+      src="https://raw.githubusercontent.com/jamesmaccoy/PrincePersia/refs/heads/main/public/PersianCarpets.svg"
     />
   )
 }
