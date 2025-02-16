@@ -43,7 +43,7 @@ export default function LoginPage() {
       }
 
       handleAuthChange()
-      router.push('/bookings')
+      router.push('/orders')
     } catch (err) {
       console.error(err)
       setError(err.message)
