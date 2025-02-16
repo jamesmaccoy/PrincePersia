@@ -59,6 +59,15 @@ export const Booking: CollectionConfig = {
         isSortable: true,
       },
     },
+    {
+      name: 'amount',
+      label: 'Amount',
+      type: 'number',
+      required: true,
+      access: {
+        update: isAdminField,
+      },
+    },
     ...slugField('title', {
       checkboxOverrides: {
         access: {
@@ -106,7 +115,7 @@ export const Booking: CollectionConfig = {
       type: 'date',
       required: true,
       index: true,
-      label: 'Check-in Date',
+      label: 'Start Date',
       admin: {
         position: 'sidebar',
         date: {
@@ -121,7 +130,7 @@ export const Booking: CollectionConfig = {
       name: 'toDate',
       type: 'date',
       required: true,
-      label: 'Check-out Date',
+      label: 'End Date',
       admin: {
         position: 'sidebar',
         date: {
