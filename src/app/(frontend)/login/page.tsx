@@ -8,12 +8,20 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-type FormValues = {
-  email: string
-  password: string
-}
+import { Purchases } from '@revenuecat/purchases-js'
 
 export default function LoginPage() {
+  const { currentUser } = useUserContext()
+  const appUserId = currentUser?.id || ''
+  const purchases = Purchases.configure(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY, {
+    appUserId,
+  })
+
+  type FormValues = {
+    email: string
+    password: string
+  }
+
   const form = useForm<FormValues>({
     defaultValues: {
       email: '',

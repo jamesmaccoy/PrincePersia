@@ -3,6 +3,8 @@
 import { User } from '@/payload-types'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
+import { Purchases } from '@revenuecat/purchases-js'
+
 type UserContextType = {
   currentUser: User | null
   handleAuthChange: () => void
@@ -12,6 +14,11 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+
+  const appUserId = currentUser?.id || ''
+  const purchases = Purchases.configure(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY, {
+    appUserId,
+  })
 
   const fetchCurrentUser = useCallback(async () => {
     const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`, {
