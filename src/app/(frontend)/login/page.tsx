@@ -8,19 +8,14 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Purchases } from '@revenuecat/purchases-js'
+type FormValues = {
+  email: string
+  password: string
+}
 
 export default function LoginPage() {
-  const { currentUser } = useUserContext()
+  const { currentUser, handleAuthChange } = useUserContext()
   const appUserId = currentUser?.id || ''
-  const purchases = Purchases.configure(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY, {
-    appUserId,
-  })
-
-  type FormValues = {
-    email: string
-    password: string
-  }
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -32,8 +27,6 @@ export default function LoginPage() {
   const router = useRouter()
 
   const [error, setError] = React.useState<string | null>(null)
-
-  const { handleAuthChange } = useUserContext()
 
   const handleLogin = async (values: FormValues) => {
     try {
