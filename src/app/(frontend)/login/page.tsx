@@ -12,7 +12,13 @@ import { Purchases } from '@revenuecat/purchases-js'
 
 // Remove or comment out the log level setting
 // Purchases.setLogLevel(Purchases.LogLevel.DEBUG) // Optional: Enable debug logs
-Purchases.configure(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY) // Replace with your actual key
+
+// Check if setup is still a valid method
+// If not, remove or comment out the setup line
+// Purchases.setup(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY) // Replace with your actual key
+
+// If the setup method is not available, you may need to initialize Purchases differently
+// Check the documentation for the correct initialization method
 
 type FormValues = {
   email: string
