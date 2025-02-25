@@ -2,24 +2,14 @@
 
 import { User } from '@/payload-types'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { Purchases } from '@revenuecat/purchases-js'
 
 type UserContextType = {
   currentUser: User | null
   handleAuthChange: () => void
+  user: User | null
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
-
-// Assuming you have access to currentUser and setCurrentUser
-
-// ... inside your login handler or useEffect triggered by login
-
-const appUserId = currentUser?.id
-
-if (appUserId) {
-  Purchases.configure('YOUR_REVENUECAT_PUBLIC_API_KEY', appUserId)
-}
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
@@ -45,7 +35,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchCurrentUser()
   }
 
-  return <UserContext value={{ currentUser, handleAuthChange }}>{children}</UserContext>
+  return (
+    <UserContext.Provider value={{ currentUser, handleAuthChange, user: currentUser }}>
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 export const useUserContext = () => {

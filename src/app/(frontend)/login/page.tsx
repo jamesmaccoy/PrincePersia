@@ -8,15 +8,18 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
+import { Purchases } from '@revenuecat/purchases-js'
+
+// Remove or comment out the log level setting
+// Purchases.setLogLevel(Purchases.LogLevel.DEBUG) // Optional: Enable debug logs
+Purchases.setup(process.env.NEXT_PUBLIC_WEB_BILLING_PUBLIC_API_KEY) // Replace with your actual key
+
 type FormValues = {
   email: string
   password: string
 }
 
 export default function LoginPage() {
-  const { currentUser, handleAuthChange } = useUserContext()
-  const appUserId = currentUser?.id || ''
-
   const form = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -27,6 +30,8 @@ export default function LoginPage() {
   const router = useRouter()
 
   const [error, setError] = React.useState<string | null>(null)
+
+  const { handleAuthChange, user } = useUserContext()
 
   const handleLogin = async (values: FormValues) => {
     try {
@@ -44,8 +49,18 @@ export default function LoginPage() {
       }
 
       handleAuthChange()
+
+      // After successful login and user context update, identify the user in RevenueCat.
+      // Make sure the user variable is populated from userContext
+      if (user && user.id) {
+        const customerInfo = await Purchases.logIn(user.id)
+        console.log('User logged in (RevenueCat):', customerInfo)
+      } else {
+        console.warn('User ID not available after login.')
+      }
+
       router.push('/orders')
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
       setError(err.message)
     }
